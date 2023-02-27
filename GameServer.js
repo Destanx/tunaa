@@ -10,7 +10,7 @@ var fs = require("fs");
 var ini = require('./modules/ini.js');
 var net = require('net');
 var colors = require('colors');
-
+var winnerName ="";
 // Project imports
 var Packet = require('./packet');
 var PlayerTracker = require('./PlayerTracker');
@@ -205,6 +205,7 @@ if(this.port == 1001){
         return dottedText;
     }
 module.exports = GameServer;
+
 GameServer.prototype.countDownTimer = function() {
  
         var pool = mysql.createPool({
@@ -265,7 +266,7 @@ GameServer.prototype.countDownTimer = function() {
 			this.topMessage10 ="trans 1,"+ this.gameName + "," +  numberWithDotted(skor) + "," +win;			
 			 var topmm  ="trans 1,"+ this.gameName + "," +  numberWithDotted(skor) + "," +win;			
 
- this.setFFA1Winner(topmm);
+  this.sendWinMessage(topmm);
 var fs = require('fs');
 var topMessage = this.topMessage10;
 // Veriyi JSON formatına çevir
@@ -596,14 +597,29 @@ con.connect(function(err) {
     }
     // this.startStatsServer(this.config.serverStatsPort);
  };
+ 
  GameServer.prototype.getFFA1Winner = function() {
-
-     return this.topMessage100;
+     return winnerName;
   };
+GameServer.prototype.sendWinMessage = function(winnerName) {
+  var startPort = 1001;
+  var endPort = 1005;
+
+  for (var i = startPort; i <= endPort; i++) {
+    // var socket = this.socket[i];
+	console.log(this.socket+" wqeqwe");
+		// var packet = new Packet.topMessage1(winnerName);
+// this.socket[i].sendPacket(packet);
+ 
+    // if (socket) {
+      // socket.emit('win', winnerName);
+    // }
+  }
+}
 
  GameServer.prototype.setFFA1Winner = function(winner) {
  	  console.log(winner);
-    this.topMessage100 = winner;
+    winnerName = winner;
   };
 
 GameServer.prototype.getMode = function() {
